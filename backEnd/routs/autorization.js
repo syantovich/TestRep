@@ -5,7 +5,7 @@ const router=Router();
 router.post("/",(req,res)=>{
     res.render("index",{
         title:"Log in",
-        isHome:true,
+        isHome:true
     })
 })
 module.exports = router;
