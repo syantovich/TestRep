@@ -3,7 +3,7 @@ import Main from "../Main/Main";
 import Footer from "../Footer/Footer";
 import React, { Fragment } from "react";
 
-const App = (props) => {
+const App = () => {
   return (
     <Fragment>
       <Header />

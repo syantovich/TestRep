@@ -4,7 +4,8 @@ import "./index.scss";
 import App from "./components/App/App";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
-import reducer from "./reducer/reducer";
+import reducer from "./store/user/reducer/reducer";
+import { HashRouter } from "react-router-dom";
 
 const store = createStore(
   reducer,
@@ -13,9 +14,11 @@ const store = createStore(
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <HashRouter>
+      <App />
+    </HashRouter>
   </Provider>,
-  document.body
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function
