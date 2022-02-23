@@ -11,11 +11,7 @@ const Main = () => {
     <main>
       <Routes>
         <Route path="/" element={<Footer />} />
-        {!user ? (
-          <Route path="registration" element={<SignIn></SignIn>} />
-        ) : (
-          false
-        )}
+        {!user && <Route path="registration" element={<SignIn></SignIn>} />}
       </Routes>
     </main>
   );
