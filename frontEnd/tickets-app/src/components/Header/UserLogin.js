@@ -1,11 +1,11 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { USER } from "../../store/user/selectors/selectors";
+import { getUser } from "../../store/user/selectors/selectors";
 import * as actions from "../../store/user/actions/actions";
 import { Link } from "react-router-dom";
 
 const UserLogin = () => {
-  const user = useSelector(USER);
+  const user = useSelector(getUser);
   const dispatch = useDispatch();
   return (
     <div
@@ -13,7 +13,7 @@ const UserLogin = () => {
       onClick={user ? () => dispatch(actions.logout()) : null}
     >
       {user ? (
-        <React.Fragment>
+        <>
           <div>{user}</div>
           <svg
             width="50"
@@ -35,7 +35,7 @@ const UserLogin = () => {
               fill="black"
             />
           </svg>
-        </React.Fragment>
+        </>
       ) : (
         <Link to="/registration">
           <div>Войти</div>
