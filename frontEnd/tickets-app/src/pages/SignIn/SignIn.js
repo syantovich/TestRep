@@ -39,7 +39,7 @@ const SignIn = () => {
   }
 
   async function signIn() {
-    userApi.signin(email, password).then((result) => {
+    userApi.signIn(email, password).then((result) => {
       console.log(result);
       localStorage.setItem("TicketsApp_User_token", result.data);
       dispatch(actions.login(email));

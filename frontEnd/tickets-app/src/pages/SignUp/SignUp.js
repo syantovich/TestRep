@@ -57,11 +57,11 @@ const SignUp = () => {
   async function signUp() {
     if (isValidEmail && isValidPassword) {
       try {
-        await userApi.signup(email, password).then((result) => {
+        await userApi.signUp(email, password).then((result) => {
           if (result.status === 200) {
             dispatch(actions.login(email));
             setErrorMessage("");
-            userApi.signin(email, password).then((result) => {
+            userApi.signIn(email, password).then((result) => {
               localStorage.setItem("TicketsApp_User_token", result.data);
             });
           }
