@@ -3,4 +3,7 @@ export const login = (value) => ({
   type: USER_ACTIONS.login,
   payload: { email: value },
 });
-export const logout = () => ({ type: USER_ACTIONS.logout });
+export const logout = () => {
+  localStorage.removeItem("TicketsApp_User_token");
+  return { type: USER_ACTIONS.logout };
+};

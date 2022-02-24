@@ -1,21 +1,19 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getUser } from "../../store/user/selectors/selectors";
-import * as actions from "../../store/user/actions/actions";
+import { getUser } from "../../store/user/selectors";
+import * as actions from "../../store/user/actions";
 import { Link } from "react-router-dom";
 
 const UserLogin = () => {
   const user = useSelector(getUser);
   const dispatch = useDispatch();
   return (
-    <div
-      className="user"
-      onClick={user ? () => dispatch(actions.logout()) : null}
-    >
+    <div className="user">
       {user ? (
         <>
           <div>{user}</div>
           <svg
+            onClick={() => dispatch(actions.logout())}
             width="50"
             height="50"
             viewBox="0 0 50 50"
@@ -37,7 +35,7 @@ const UserLogin = () => {
           </svg>
         </>
       ) : (
-        <Link to="/registration">
+        <Link to="/signin">
           <div>Войти</div>
           <svg
             width="50"
