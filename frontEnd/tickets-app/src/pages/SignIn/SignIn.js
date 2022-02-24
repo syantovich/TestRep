@@ -1,40 +1,45 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { userApi } from "../../api/userApi";
 import { useDispatch } from "react-redux";
 import * as actions from "../../store/user/actions";
 import { TextField, Button } from "@mui/material";
+import { userExp } from "../../regExp/user";
 
 const SignIn = () => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const refEmail = useRef("");
-  const refPassword = useRef("");
-  const refSubm = useRef();
-  const refError = useRef();
+  const [isValidEmail, setValidEmail] = useState(false);
+  const [isValidPassword, setValidPassword] = useState(false);
 
   function emailToState(EO) {
     setEmail(EO.target.value);
-    if (
-      !/^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/.test(
-        EO.target.value
-      )
-    ) {
-      /*  refError.current.innerText = "Введите корректный email";
-            refSubm.current.disabled = true;
-          } else {
-            refSubm.current.disabled = false;
-            refError.current.innerText = "";*/
+    if (!userExp.email.test(email)) {
+      if (isValidEmail) {
+        setValidEmail(false);
+      }
+    } else {
+      if (!isValidEmail) {
+        setValidEmail(true);
+      }
     }
   }
 
   function passwordToState(EO) {
     setPassword(EO.target.value);
+    if (password.length > 7) {
+      if (!isValidPassword) {
+        setValidPassword(true);
+      }
+    } else {
+      if (isValidPassword) {
+        setValidPassword(false);
+      }
+    }
   }
 
-  async function signin(e) {
-    const res = userApi.signin(email, password).then((result) => {
+  async function signIn() {
+    userApi.signin(email, password).then((result) => {
       console.log(result);
       localStorage.setItem("TicketsApp_User_token", result.data);
       dispatch(actions.login(email));
@@ -51,10 +56,10 @@ const SignIn = () => {
             id="e-mail"
             label="Почта"
             variant="outlined"
-            ref={refEmail}
             onChange={emailToState}
             required
           />
+          <span>{!isValidEmail ? "Введите корректную почту" : ""}</span>
         </label>
         <label id="password">
           <p>Пароль</p>
@@ -63,17 +68,24 @@ const SignIn = () => {
             label="Пароль"
             variant="outlined"
             type="password"
-            ref={refPassword}
             onChange={passwordToState}
             required
           />
+          <span>
+            {!isValidPassword
+              ? "Пароль должен содеражть минимум 8 символов"
+              : ""}
+          </span>
         </label>
         <br />
-        <Button variant="contained" ref={refSubm} onClick={signin}>
+        <Button
+          variant="contained"
+          onClick={signIn}
+          disabled={!isValidEmail || !isValidPassword ? true : false}
+        >
           Войти
         </Button>
         <br />
-        <span ref={refError}></span>
       </form>
     </div>
   );

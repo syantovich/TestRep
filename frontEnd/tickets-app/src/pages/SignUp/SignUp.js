@@ -1,78 +1,77 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { userApi } from "../../api/userApi";
 import { useDispatch } from "react-redux";
 import * as actions from "../../store/user/actions";
 import { TextField, Button } from "@mui/material";
+import { userExp } from "../../regExp/user";
 
 const SignUp = () => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [secondPassword, setSecondPassword] = useState("");
-  const [isValidForm, setValidForm] = useState({
-    email: false,
-    isCorretPassword: false,
-  });
-
-  const refEmail = useRef("");
-  const refPassword = useRef("");
-  const refSubm = useRef();
-  const refError = useRef();
+  const [isValidEmail, setValidEmail] = useState(false);
+  const [isValidPassword, setValidPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   async function emailToState(EO) {
-    console.log(EO.target.value);
-    if (
-      /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/.test(
-        EO.target.value
-      )
-    ) {
-      userApi.isUserBe(EO.target.value).then((res) => {
-        if (!res.data) {
-          console.log(res.data);
-          setEmail(EO.target.value);
-          setValidForm({ ...isValidForm, email: true });
-          /*  refError.current.innerText = "Введите корректный email";
-            refSubm.current.disabled = true;
-          } else {
-            refSubm.current.disabled = false;
-            refError.current.innerText = "";*/
-        }
-      });
+    setEmail(EO.target.value);
+    if (userExp.email.test(EO.target.value)) {
+      if (!isValidEmail) {
+        setValidEmail(true);
+      }
+    } else {
+      if (isValidEmail) {
+        setValidEmail(false);
+      }
     }
   }
 
   function passwordToState(EO) {
     setPassword(EO.target.value);
-    if (password === secondPassword) {
-      setValidForm({ ...isValidForm, isCorretPassword: true });
+
+    if (EO.target.value === secondPassword && password.length > 7) {
+      if (!isValidPassword) {
+        setValidPassword(true);
+      }
     } else {
-      setValidForm({ ...isValidForm, isCorretPassword: true });
-    }
-  }
-
-  function secondpasswordToState(EO) {
-    setSecondPassword(EO.target.value);
-    if (password === secondPassword) {
-      setValidForm({ ...isValidForm, isCorretPassword: true });
-    }
-  }
-
-  async function signup(e) {
-    let all = 2;
-    for (let key in isValidForm) {
-      if (isValidForm[key]) {
-        all--;
+      if (isValidPassword) {
+        setValidPassword(false);
       }
     }
-    if (!all) {
-      await userApi.signup(email, password).then((result) => {
-        console.log(result);
-        dispatch(actions.login(email));
-        userApi.signin(email, password).then((result) => {
-          localStorage.setItem("TicketsApp_User_token", result.data);
-        });
-      });
+  }
+
+  function secondPasswordToState(EO) {
+    setSecondPassword(EO.target.value);
+    if (password === EO.target.value && password.length > 7) {
+      if (!isValidPassword) {
+        setValidPassword(true);
+      }
     } else {
+      if (isValidPassword) {
+        setValidPassword(false);
+      }
+    }
+  }
+
+  async function signUp() {
+    if (isValidEmail && isValidPassword) {
+      try {
+        await userApi.signup(email, password).then((result) => {
+          if (result.status === 200) {
+            dispatch(actions.login(email));
+            setErrorMessage("");
+            userApi.signin(email, password).then((result) => {
+              localStorage.setItem("TicketsApp_User_token", result.data);
+            });
+          }
+        });
+      } catch {
+        setErrorMessage("Такой пользователь уже существует");
+      }
+    } else {
+      console.log(isValidPassword);
+      console.log(isValidEmail);
       console.log("Invalid Form");
     }
   }
@@ -87,11 +86,11 @@ const SignUp = () => {
             id="e-mail"
             label="Почта"
             variant="outlined"
-            ref={refEmail}
             onChange={emailToState}
             required
           />
         </label>
+        <span>{!isValidEmail ? "Введите корректную почту" : ""}</span>
         <label>
           <p>Пароль</p>
           <TextField
@@ -99,7 +98,6 @@ const SignUp = () => {
             label="Пароль"
             variant="outlined"
             type="password"
-            ref={refPassword}
             onChange={passwordToState}
             required
           />
@@ -111,17 +109,21 @@ const SignUp = () => {
             label="Пароль"
             variant="outlined"
             type="password"
-            ref={refPassword}
-            onChange={passwordToState}
+            onChange={secondPasswordToState}
             required
           />
         </label>
+        <span>
+          {!isValidPassword
+            ? "Пароли должны совпадать и длинна должна быть больше 8 символо"
+            : ""}
+        </span>
         <br />
-        <Button variant="contained" ref={refSubm} onClick={signup}>
+        <Button variant="contained" onClick={signUp}>
           Войти
         </Button>
         <br />
-        <span ref={refError}></span>
+        <span>{errorMessage}</span>
       </form>
     </div>
   );

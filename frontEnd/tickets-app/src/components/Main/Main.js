@@ -12,7 +12,7 @@ import SignUp from "../../pages/SignUp/SignUp";
 const Main = () => {
   const user = useSelector(getUser);
   const dispatch = useDispatch();
-  if (localStorage.getItem("TicketsApp_User_token") != undefined) {
+  if (localStorage.getItem("TicketsApp_User_token") !== undefined) {
     userApi
       .user_me(`${localStorage.getItem("TicketsApp_User_token")}`)
       .then((result) => {
