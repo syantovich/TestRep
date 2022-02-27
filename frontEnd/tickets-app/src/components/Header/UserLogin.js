@@ -35,23 +35,28 @@ const UserLogin = () => {
           </svg>
         </>
       ) : (
-        <Link to="/signin">
-          <div>Войти</div>
-          <svg
-            width="50"
-            height="50"
-            viewBox="0 0 50 50"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <circle cx="25" cy="25" r="25" fill="#E9E9E9" />
-            <circle cx="25.5" cy="20.5" r="7.5" fill="black" />
-            <path
-              d="M42 43C39 45.5 35.4934 50 25 50C14.5066 50 10.5 46 8 43C12 34.5 15.5066 28 26 28C36.4934 28 40.5 37.5 42 43Z"
-              fill="black"
-            />
-          </svg>
-        </Link>
+        <>
+          <Link to="/login">
+            <div>Войти</div>
+            <svg
+              width="50"
+              height="50"
+              viewBox="0 0 50 50"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle cx="25" cy="25" r="25" fill="#E9E9E9" />
+              <circle cx="25.5" cy="20.5" r="7.5" fill="black" />
+              <path
+                d="M42 43C39 45.5 35.4934 50 25 50C14.5066 50 10.5 46 8 43C12 34.5 15.5066 28 26 28C36.4934 28 40.5 37.5 42 43Z"
+                fill="black"
+              />
+            </svg>
+          </Link>
+          <Link to="/signup">
+            <div>Регистрация</div>
+          </Link>
+        </>
       )}
     </div>
   );

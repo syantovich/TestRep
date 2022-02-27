@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import { userApi } from "../../api/userApi";
 import { useDispatch } from "react-redux";
 import * as actions from "../../store/user/actions";
 import { TextField, Button } from "@mui/material";
 import { userExp } from "../../regExp/user";
 
-const SignIn = () => {
+const LogIn = () => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isValidEmail, setValidEmail] = useState(false);
   const [isValidPassword, setValidPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   function emailToState(EO) {
     setEmail(EO.target.value);
@@ -36,14 +36,6 @@ const SignIn = () => {
         setValidPassword(false);
       }
     }
-  }
-
-  async function signIn() {
-    userApi.signIn(email, password).then((result) => {
-      console.log(result);
-      localStorage.setItem("TicketsApp_User_token", result.data);
-      dispatch(actions.login(email));
-    });
   }
 
   return (
@@ -80,14 +72,17 @@ const SignIn = () => {
         <br />
         <Button
           variant="contained"
-          onClick={signIn}
+          onClick={() =>
+            dispatch(actions.login(email, password, setErrorMessage))
+          }
           disabled={!isValidEmail || !isValidPassword ? true : false}
         >
           Войти
         </Button>
         <br />
+        <span>{errorMessage}</span>
       </form>
     </div>
   );
 };
-export default SignIn;
+export default LogIn;

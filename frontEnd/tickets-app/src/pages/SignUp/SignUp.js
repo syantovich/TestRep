@@ -54,28 +54,6 @@ const SignUp = () => {
     }
   }
 
-  async function signUp() {
-    if (isValidEmail && isValidPassword) {
-      try {
-        await userApi.signUp(email, password).then((result) => {
-          if (result.status === 200) {
-            dispatch(actions.login(email));
-            setErrorMessage("");
-            userApi.signIn(email, password).then((result) => {
-              localStorage.setItem("TicketsApp_User_token", result.data);
-            });
-          }
-        });
-      } catch {
-        setErrorMessage("Такой пользователь уже существует");
-      }
-    } else {
-      console.log(isValidPassword);
-      console.log(isValidEmail);
-      console.log("Invalid Form");
-    }
-  }
-
   return (
     <div className="center signin">
       <form>
@@ -105,7 +83,6 @@ const SignUp = () => {
         <label>
           <p>Повторите пароль</p>
           <TextField
-            id="password"
             label="Пароль"
             variant="outlined"
             type="password"
@@ -119,7 +96,20 @@ const SignUp = () => {
             : ""}
         </span>
         <br />
-        <Button variant="contained" onClick={signUp}>
+        <Button
+          variant="contained"
+          onClick={() =>
+            dispatch(
+              actions.signup(
+                email,
+                password,
+                isValidEmail,
+                isValidPassword,
+                setErrorMessage
+              )
+            )
+          }
+        >
           Войти
         </Button>
         <br />
