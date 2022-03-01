@@ -3,8 +3,10 @@ import { useDispatch } from "react-redux";
 import * as actions from "../../store/user/actions";
 import { TextField, Button } from "@mui/material";
 import { userExp } from "../../regExp/user";
+import { useNavigate } from "react-router-dom";
 
 const LogIn = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -73,7 +75,7 @@ const LogIn = () => {
         <Button
           variant="contained"
           onClick={() =>
-            dispatch(actions.login(email, password, setErrorMessage))
+            dispatch(actions.login(email, password, setErrorMessage, navigate))
           }
           disabled={!isValidEmail || !isValidPassword ? true : false}
         >

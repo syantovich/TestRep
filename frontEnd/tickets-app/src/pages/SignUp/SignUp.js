@@ -4,8 +4,10 @@ import { useDispatch } from "react-redux";
 import * as actions from "../../store/user/actions";
 import { TextField, Button } from "@mui/material";
 import { userExp } from "../../regExp/user";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -98,17 +100,18 @@ const SignUp = () => {
         <br />
         <Button
           variant="contained"
-          onClick={() =>
+          onClick={() => {
             dispatch(
               actions.signup(
                 email,
                 password,
                 isValidEmail,
                 isValidPassword,
-                setErrorMessage
+                setErrorMessage,
+                navigate
               )
-            )
-          }
+            );
+          }}
         >
           Войти
         </Button>
