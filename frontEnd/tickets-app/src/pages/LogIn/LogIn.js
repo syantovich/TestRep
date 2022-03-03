@@ -4,6 +4,7 @@ import * as actions from "../../store/user/actions";
 import { TextField, Button } from "@mui/material";
 import { userExp } from "../../regExp/user";
 import { useNavigate } from "react-router-dom";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const LogIn = () => {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ const LogIn = () => {
   const [password, setPassword] = useState("");
   const [isValidEmail, setValidEmail] = useState(false);
   const [isValidPassword, setValidPassword] = useState(false);
+  const [isValidReCAPTCHA, setValidReCAPTCHA] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   function emailToState(EO) {
@@ -71,13 +73,23 @@ const LogIn = () => {
               : ""}
           </span>
         </label>
+        <ReCAPTCHA
+          sitekey="http://localhost:3001/login"
+          onChange={() => {
+            setValidReCAPTCHA(true);
+          }}
+        />
         <br />
         <Button
           variant="contained"
           onClick={() =>
             dispatch(actions.login(email, password, setErrorMessage, navigate))
           }
-          disabled={!isValidEmail || !isValidPassword ? true : false}
+          disabled={
+            !isValidEmail || !isValidPassword || !isValidReCAPTCHA
+              ? true
+              : false
+          }
         >
           Войти
         </Button>

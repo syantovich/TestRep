@@ -21,7 +21,6 @@ const SliderFilms = ({ type }) => {
             name={e.name}
           />
         ));
-        console.log(filmsArray);
         setFilms(filmsArray);
       });
     };

@@ -14,49 +14,49 @@ const NavBar = () => {
       </NavLink>
       <NavLink
         end
-        to="/comedy"
+        to="/category/comedy"
         className={(isActive) => "navLink" + (isActive ? ` activeNavLink` : "")}
       >
         Комедии
       </NavLink>
       <NavLink
         end
-        to="/horror"
+        to="/category/horror"
         className={(isActive) => "navLink" + (isActive ? ` activeNavLink` : "")}
       >
         Ужасы
       </NavLink>
       <NavLink
         end
-        to="/actions"
+        to="/category/action"
         className={(isActive) => "navLink" + (isActive ? ` activeNavLink` : "")}
       >
         Боевики
       </NavLink>
       <NavLink
         end
-        to="/melodrama"
+        to="/category/melodrama"
         className={(isActive) => "navLink" + (isActive ? ` activeNavLink` : "")}
       >
         Мелодрамы
       </NavLink>
       <NavLink
         end
-        to="/fantasy"
+        to="/category/fantasy"
         className={(isActive) => "navLink" + (isActive ? ` activeNavLink` : "")}
       >
         Фентези
       </NavLink>
       <NavLink
         end
-        to="/cartoon"
+        to="/category/cartoon"
         className={(isActive) => "navLink" + (isActive ? ` activeNavLink` : "")}
       >
         Мультики
       </NavLink>
       <NavLink
         end
-        to="/thriller"
+        to="/category/thriller"
         className={(isActive) => "navLink" + (isActive ? ` activeNavLink` : "")}
       >
         Триллер
