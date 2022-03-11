@@ -1,12 +1,21 @@
 import axios from "axios";
+import { API_URL } from "../constants/constants";
 
 export const filmsApi = {
-  getMovieInfo(type) {
-    const url = `http://127.0.0.1:3000/movieinfo/getfilms`;
+  getAllFilms(type) {
+    const url = API_URL + `movieinfo/getfilms`;
     return axios.post(url, { type });
   },
   getFilmsCategory(category, page) {
-    const url = "http://127.0.0.1:3000/movieinfo/category";
+    const url = API_URL + "movieinfo/category";
     return axios.post(url, { category, page });
+  },
+  getMovie(id, dateWatching) {
+    const url = API_URL + "movie/get/" + id;
+    return axios.post(url, { dateWatching });
+  },
+  getFilmInfo(id) {
+    const url = API_URL + "movieinfo/getinfo/" + id;
+    return axios.get(url);
   },
 };

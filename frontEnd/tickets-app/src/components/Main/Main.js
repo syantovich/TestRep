@@ -9,6 +9,7 @@ import SignUp from "../../pages/SignUp/SignUp";
 import MainPage from "../../pages/MainPage/MainPage";
 import NavBar from "../NavBar/NavBar";
 import Category from "../../pages/Category/Category";
+import InfoFilm from "../../pages/InfoFilm/InfoFilm";
 
 const Main = () => {
   const user = useSelector(getUser);
@@ -32,6 +33,7 @@ const Main = () => {
           path="category/:category"
           element={<Category category={param.category} />}
         />
+        <Route path="movie/:id" element={<InfoFilm />} />
         <Route path="/" element={<MainPage />} />
       </Routes>
     </main>

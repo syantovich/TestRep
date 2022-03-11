@@ -25,19 +25,17 @@ export const signup =
   async (dispatch) => {
     if (isValidEmail && isValidPassword) {
       try {
-        await userApi.signUp(email, password).then((result) => {
-          if (result.status === 200) {
-            navigate("/");
-            dispatch({
-              type: USER_ACTIONS.login,
-              payload: { email },
-            });
-            setErrorMessage("");
-            userApi.signIn(email, password).then((result) => {
-              localStorage.setItem("TicketsApp_User_token", result.data);
-            });
-          }
-        });
+        let result = await userApi.signUp(email, password);
+        if (result.status === 200) {
+          navigate("/");
+          dispatch({
+            type: USER_ACTIONS.login,
+            payload: { email },
+          });
+          setErrorMessage("");
+          const res = userApi.signIn(email, password);
+          localStorage.setItem("TicketsApp_User_token", res.data);
+        }
       } catch {
         setErrorMessage("Такой пользователь уже существует");
       }
@@ -45,17 +43,16 @@ export const signup =
       console.log("Invalid Form");
     }
   };
-export const local = () => (dispatch) => {
+export const local = () => async (dispatch) => {
   const emailInLocalStorage = localStorage.getItem("TicketsApp_User_token");
   if (emailInLocalStorage !== null) {
-    userApi.user_me(emailInLocalStorage).then((result) => {
-      if (result.status === 200) {
-        const email = result.data.email;
-        dispatch({
-          type: USER_ACTIONS.login,
-          payload: { email },
-        });
-      }
-    });
+    const result = await userApi.user_me(emailInLocalStorage);
+    if (result.status === 200) {
+      const email = result.data.email;
+      dispatch({
+        type: USER_ACTIONS.login,
+        payload: { email },
+      });
+    }
   }
 };

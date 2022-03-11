@@ -1,14 +1,19 @@
 import { useState } from "react";
 import "./Film.scss";
+import { Link } from "react-router-dom";
 
-const Film = ({ img, dateEnd, dateStart, name }) => {
-  const start = useState(new Date(dateStart));
-  const end = useState(new Date(dateEnd));
+const Film = ({ img, dateEnd, dateStart, name, id }) => {
+  const [start] = useState(new Date(dateStart));
+  const [end] = useState(new Date(dateEnd));
   return (
-    <div className="wraper">
-      <img src={img} />
-      <span>{name}</span>
-      <span>{`C ${start[0].getDay()}.${start[0].getMonth()}.${start[0].getFullYear()} по ${end[0].getDay()}.${end[0].getMonth()}.${start[0].getFullYear()}`}</span>
+    <div className="wrapper">
+      <Link to={"../movie/" + id}>
+        <img src={img} alt={img} />
+        <br />
+        <span>{name}</span>
+        <br />
+        <span>{`C ${start.getDay()}.${start.getMonth()}.${start.getFullYear()} по ${end.getDay()}.${end.getMonth()}.${start.getFullYear()}`}</span>
+      </Link>
     </div>
   );
 };

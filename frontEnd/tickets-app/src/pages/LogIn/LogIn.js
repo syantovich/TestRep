@@ -5,6 +5,7 @@ import { TextField, Button } from "@mui/material";
 import { userExp } from "../../regExp/user";
 import { useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
+import { maxLengthPassword } from "../../constants/constants";
 
 const LogIn = () => {
   const navigate = useNavigate();
@@ -18,20 +19,13 @@ const LogIn = () => {
 
   function emailToState(EO) {
     setEmail(EO.target.value);
-    if (!userExp.email.test(email)) {
-      if (isValidEmail) {
-        setValidEmail(false);
-      }
-    } else {
-      if (!isValidEmail) {
-        setValidEmail(true);
-      }
-    }
+
+    setValidEmail(userExp.email.test(email));
   }
 
   function passwordToState(EO) {
     setPassword(EO.target.value);
-    if (password.length > 7) {
+    if (password.length > maxLengthPassword) {
       if (!isValidPassword) {
         setValidPassword(true);
       }
@@ -74,7 +68,7 @@ const LogIn = () => {
           </span>
         </label>
         <ReCAPTCHA
-          sitekey="http://localhost:3001/login"
+          sitekey={window.location.origin + "/login"}
           onChange={() => {
             setValidReCAPTCHA(true);
           }}
@@ -85,11 +79,7 @@ const LogIn = () => {
           onClick={() =>
             dispatch(actions.login(email, password, setErrorMessage, navigate))
           }
-          disabled={
-            !isValidEmail || !isValidPassword || !isValidReCAPTCHA
-              ? true
-              : false
-          }
+          disabled={!isValidEmail || !isValidPassword}
         >
           Войти
         </Button>

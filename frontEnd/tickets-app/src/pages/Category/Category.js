@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { filmsApi } from "../../api/filmsApi";
-import { Grid } from "@mui/material";
 import Film from "../../components/Film/Film";
 import "./Category.scss";
-import { Pagination } from "@mui/material";
+import { Pagination, Grid } from "@mui/material";
 
-const Category = (props) => {
+const Category = () => {
   const param = useParams();
   const [category, setCategory] = useState("");
   const [films, setFilms] = useState(false);
@@ -14,18 +13,17 @@ const Category = (props) => {
   const [allpage, setAllPage] = useState(1);
   const filmsFunc = async (page) => {
     let sortFilms = await filmsApi.getFilmsCategory(param.category, page);
-    console.log(category);
-    console.log(sortFilms);
     setAllPage(sortFilms.data.maxPage);
     sortFilms = sortFilms.data.skipedArr.map((e) => {
       return (
-        <Grid item xs={3} md={3}>
+        <Grid item xs={3} md={3} key={e._id} className="item_category">
           <Film
             dateStart={e.dateStart}
             dateEnd={e.dateEnd}
-            key={e.name}
+            key={e._id}
             img={e.img}
             name={e.name}
+            id={e._id}
           />
         </Grid>
       );
@@ -34,12 +32,10 @@ const Category = (props) => {
     setFilms(sortFilms);
   };
   useEffect(() => {
-    console.log(category + " Category");
-    console.log(param.category + " Params");
     if (category !== param.category) {
       filmsFunc(numPage);
     }
-  });
+  }, [param.category]);
 
   return (
     <>
@@ -55,7 +51,6 @@ const Category = (props) => {
           onChange={(e, page) => {
             setNumPage(page);
             filmsFunc(page);
-            console.log(page);
           }}
         />
       ) : (

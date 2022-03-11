@@ -1,21 +1,22 @@
 import axios from "axios";
+import { API_URL } from "../constants/constants";
 
 export const userApi = {
   signIn(email, password) {
-    const url = `http://127.0.0.1:3000/authenticate`;
+    const url = API_URL + `authenticate`;
     return axios.post(url, { email, password });
   },
   signUp(email, password) {
-    const url = "http://127.0.0.1:3000/registration";
+    const url = API_URL + "registration";
     return axios.post(url, { email, password });
   },
   isUserPresent(email) {
-    const url = "http://127.0.0.1:3000/getuser/get";
+    const url = API_URL + "getuser/get";
     return axios.post(url, { email });
   },
 
   user_me(token) {
-    const url = "http://127.0.0.1:3000/authenticate/employees";
+    const url = API_URL + "authenticate/employees";
     return axios.get(url, { headers: { "x-access-token": token } });
   },
 };

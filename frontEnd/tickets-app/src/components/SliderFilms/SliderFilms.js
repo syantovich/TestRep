@@ -11,18 +11,18 @@ const SliderFilms = ({ type }) => {
   const [films, setFilms] = useState([]);
   useEffect(() => {
     const getMovieInfo = async () => {
-      await filmsApi.getMovieInfo(type).then((result) => {
-        const filmsArray = result.data.map((e) => (
-          <Film
-            dateStart={e.dateStart}
-            dateEnd={e.dateEnd}
-            key={e.name}
-            img={e.img}
-            name={e.name}
-          />
-        ));
-        setFilms(filmsArray);
-      });
+      const result = await filmsApi.getAllFilms(type);
+      const filmsArray = result.data.map((e) => (
+        <Film
+          dateStart={e.dateStart}
+          dateEnd={e.dateEnd}
+          key={e._id}
+          img={e.img}
+          name={e.name}
+          id={e._id}
+        />
+      ));
+      setFilms(filmsArray);
     };
     getMovieInfo();
   }, []);
@@ -32,11 +32,12 @@ const SliderFilms = ({ type }) => {
       <h4>{type === "now" ? "Сегодня в кино" : "Скоро в кино"}</h4>
       <Box
         sx={{
-          height: 330,
+          height: 430,
           backgroundColor: "#525252",
         }}
       >
         <AliceCarousel
+          className="imgSlider"
           items={films}
           autoHeight={"300px"}
           controlsStrategy="default,responsive"
