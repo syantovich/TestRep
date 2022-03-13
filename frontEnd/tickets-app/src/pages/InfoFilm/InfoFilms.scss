@@ -12,3 +12,76 @@
   border-bottom: 1px solid white;
   width: 100%;
 }
+
+.showSession_wrapper {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  background-color: rgba(48, 48, 48, 0.2);
+}
+
+.showSession {
+  position: relative;
+  min-width: 50vw;
+  min-height: 50vh;
+  background-color: #fcfcde;
+  border-radius: 20px;
+  padding: 20px 40px;
+}
+
+.close {
+  position: absolute;
+  font-size: 20px;
+  top: 5px;
+  right: 20px;
+}
+
+.infoSession .nameFilm {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.infoSession div:nth-child(n) {
+  margin-bottom: 5px;
+}
+
+.seats {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  flex-grow: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.seats_border {
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #e5e4e4;
+  border-radius: 20px;
+}
+
+.seat {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+}
+
+.vip {
+  background-color: red;
+}
+
+.std {
+  background-color: white;
+}
+
+.type1 {
+  background-color: #353434;
+}

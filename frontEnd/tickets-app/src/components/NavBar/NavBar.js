@@ -2,13 +2,12 @@ import { NavLink } from "react-router-dom";
 import React from "react";
 import "./NavBar.scss";
 import classNames from "classnames";
-import { isActiveItem } from "react-alice-carousel/lib/utils";
 
 const NavBar = () => {
   const isActiveClass = (isActive) =>
     classNames({ navLink: true, activeNavLink: isActive });
   return (
-    <div className="flex">
+    <div className="navBar flex">
       <NavLink end to="/" className={isActiveClass}>
         Главная
       </NavLink>

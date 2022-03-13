@@ -18,4 +18,8 @@ export const filmsApi = {
     const url = API_URL + "movieinfo/getinfo/" + id;
     return axios.get(url);
   },
+  getSessionInfo(id) {
+    const url = API_URL + "movie/get/session/" + id;
+    return axios.get(url);
+  },
 };
