@@ -9,6 +9,8 @@ import ru from "date-fns/locale/ru";
 import MovieSession from "../../components/MovieSession/MovieSession";
 import { usefullFunctions } from "../../usefullFunction/usefullFunctions";
 import { parseISO } from "date-fns";
+import { io } from "socket.io-client";
+import ShowSeats from "../../components/ShowSeats/ShowSeats";
 
 const InfoFilm = () => {
   registerLocale("ru", ru);
@@ -21,6 +23,7 @@ const InfoFilm = () => {
   const [showSession, setShowSession] = useState({});
   const [isShowSession, setIsShowSession] = useState(false);
   const [seats, setSeats] = useState(false);
+  const [socket, setSocket] = useState(false);
   const param = useParams();
 
   const getArrFilms = async (newDate) => {
@@ -67,6 +70,15 @@ const InfoFilm = () => {
   }, [date]);
   useEffect(() => {
     if (isShowSession) {
+      const socketNew = io("http://127.0.0.1:3000/");
+      setSocket(socketNew);
+
+      function availabilityCheck(i, j) {
+        if (showSession.hall.places[i][j] === 0) {
+          socketNew.emit("booking", i, j);
+        }
+      }
+
       let arr = showSession.places.map((e, i) => {
         let rowArr = e.map((eRow, iRow) => (
           <div
@@ -74,22 +86,23 @@ const InfoFilm = () => {
             className={
               "seat " + showSession.hall.places[i][iRow] + " type" + eRow
             }
+            onClick={() => {
+              socketNew.emit("click", `${"column" + i + " row" + iRow}`);
+            }}
           />
         ));
         return (
-          <>
-            <Stack
-              key={"row" + i}
-              direction="row"
-              justifyContent="center"
-              alignItems="center"
-              spacing={2}
-            >
-              <span className="row">{i + 1}</span>
-              {rowArr}
-              <span className="row">{i + 1}</span>
-            </Stack>{" "}
-          </>
+          <Stack
+            key={"row" + i}
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            spacing={2}
+          >
+            <span className="row">{i + 1}</span>
+            {rowArr}
+            <span className="row">{i + 1}</span>
+          </Stack>
         );
       });
       arr = (
@@ -137,37 +150,13 @@ const InfoFilm = () => {
         </Grid>
       </Grid>
       {isShowSession && (
-        <div className="showSession_wrapper center">
-          <Stack
-            direction="column"
-            justifyContent="flex-start"
-            alignItems="flex-start"
-            spacing={2}
-            className="showSession"
-          >
-            <span
-              className="close"
-              onClick={() => {
-                setShowSession({});
-                setIsShowSession(false);
-              }}
-            >
-              ✕
-            </span>
-            <span className="infoSession">
-              <div className="nameFilm">{showSession.info.name}</div>
-              <div className="dateSession">
-                {usefullFunctions.onlyDayMonthYear(showSession.date, false)}
-              </div>
-              <div className="nameCinemaHall">
-                {showSession.cinema.name + " - " + showSession.hall.name}
-              </div>
-            </span>
-            <div className="seats">
-              <div className="seats_border">{seats}</div>
-            </div>
-          </Stack>
-        </div>
+        <ShowSeats
+          socket={socket}
+          seats={seats}
+          setIsShowSession={setIsShowSession}
+          setShowSession={setShowSession}
+          showSession={showSession}
+        />
       )}
     </>
   );

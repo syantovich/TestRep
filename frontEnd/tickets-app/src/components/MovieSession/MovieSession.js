@@ -15,7 +15,7 @@ const MovieSession = ({ cinema, halls, cbSetShowSession }) => {
         let arrButSessions = halls[hall].map((e) => (
           <LoadingButton
             variant="contained"
-            key={e.session._id}
+            key={e._id + "" + e.session._id}
             className="sessions"
             onClick={async () => {
               setLoading(true);
