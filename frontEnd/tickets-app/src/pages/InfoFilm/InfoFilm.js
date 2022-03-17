@@ -11,6 +11,7 @@ import { usefullFunctions } from "../../usefullFunction/usefullFunctions";
 import { parseISO } from "date-fns";
 import { io } from "socket.io-client";
 import ShowSeats from "../../components/ShowSeats/ShowSeats";
+import { API_URL } from "../../constants/constants";
 
 const InfoFilm = () => {
   registerLocale("ru", ru);
@@ -30,18 +31,7 @@ const InfoFilm = () => {
     let response = await filmsApi.getMovie(param.id, newDate);
     const sessions = {};
 
-    response.data.forEach((e) => {
-      if (e.cinema.name in sessions) {
-        if (e.hall.name in sessions[e.cinema.name]) {
-          sessions[e.cinema.name][e.hall.name].push(e);
-        } else {
-          sessions[e.cinema.name][e.hall.name] = [e];
-        }
-      } else {
-        sessions[e.cinema.name] = {};
-        sessions[e.cinema.name][e.hall.name] = [e];
-      }
-    });
+    usefullFunctions.formatDataForFilm(response, sessions);
     let arrElem = [<MovieSession halls={false} key="header"></MovieSession>];
     for (let keyCinema in sessions) {
       arrElem.push(
@@ -70,7 +60,7 @@ const InfoFilm = () => {
   }, [date]);
   useEffect(() => {
     if (isShowSession) {
-      const socketNew = io("http://127.0.0.1:3000/");
+      const socketNew = io(API_URL);
       setSocket(socketNew);
 
       function availabilityCheck(i, j) {
@@ -87,13 +77,13 @@ const InfoFilm = () => {
               "seat " + showSession.hall.places[i][iRow] + " type" + eRow
             }
             onClick={() => {
-              socketNew.emit("click", `${"column" + i + " row" + iRow}`);
+              socketNew.emit("booking", showSession._id, i, iRow);
             }}
           />
         ));
         return (
           <Stack
-            key={"row" + i}
+            key={`row${i}`}
             direction="row"
             justifyContent="center"
             alignItems="center"

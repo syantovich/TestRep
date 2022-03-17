@@ -7,6 +7,14 @@ import { filmsApi } from "../../api/filmsApi";
 const MovieSession = ({ cinema, halls, cbSetShowSession }) => {
   const [hallsEl, setHallsEl] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  async function loadingShowSession(e) {
+    setLoading(true);
+    let response = await filmsApi.getSessionInfo(e._id);
+    cbSetShowSession(response.data);
+    setLoading(false);
+  }
+
   useEffect(() => {
     if (halls !== false) {
       let arrHallsEl = [];
@@ -15,15 +23,9 @@ const MovieSession = ({ cinema, halls, cbSetShowSession }) => {
         let arrButSessions = halls[hall].map((e) => (
           <LoadingButton
             variant="contained"
-            key={e._id + "" + e.session._id}
+            key={`${e._id}${e.session._id}`}
             className="sessions"
-            onClick={async () => {
-              setLoading(true);
-              let response = await filmsApi.getSessionInfo(e._id);
-              console.log(response);
-              cbSetShowSession(response.data);
-              setLoading(false);
-            }}
+            onClick={() => loadingShowSession(e)}
             loading={loading}
           >
             {e.session.timeStart}
@@ -32,7 +34,7 @@ const MovieSession = ({ cinema, halls, cbSetShowSession }) => {
         arrHallsEl.push(
           <Grid
             item
-            key={hall + "" + cinema + ""}
+            key={`${hall}${cinema}`}
             md={12}
             xs={12}
             className="border flex-left"

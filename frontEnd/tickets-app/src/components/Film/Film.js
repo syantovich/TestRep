@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./Film.scss";
 import { Link } from "react-router-dom";
+import { usefullFunctions } from "../../usefullFunction/usefullFunctions";
 
 const Film = ({ img, dateEnd, dateStart, name, id }) => {
   const [start] = useState(new Date(dateStart));
@@ -12,7 +13,10 @@ const Film = ({ img, dateEnd, dateStart, name, id }) => {
         <br />
         <span>{name}</span>
         <br />
-        <span>{`C ${start.getDay()}.${start.getMonth()}.${start.getFullYear()} по ${end.getDay()}.${end.getMonth()}.${start.getFullYear()}`}</span>
+        <span>{`C ${usefullFunctions.onlyDayMonthYear(
+          start,
+          false
+        )} по ${usefullFunctions.onlyDayMonthYear(end, false)}`}</span>
       </Link>
     </div>
   );

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import LogIn from "../../pages/LogIn/LogIn";
-import { Route, Routes, useParams } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../store/user/selectors";
 import * as actions from "../../store/user/actions";
@@ -17,7 +17,6 @@ const Main = () => {
   useEffect(() => {
     dispatch(actions.local());
   }, []);
-  const param = useParams();
 
   return (
     <main>
@@ -29,10 +28,7 @@ const Main = () => {
             <Route path="signup" element={<SignUp />} />
           </>
         )}
-        <Route
-          path="category/:category"
-          element={<Category category={param.category} />}
-        />
+        <Route path="category/:category" element={<Category />} />
         <Route path="movie/:id" element={<InfoFilm />} />
         <Route path="/" element={<MainPage />} />
       </Routes>

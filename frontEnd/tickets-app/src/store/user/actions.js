@@ -4,17 +4,18 @@ export const USER_ACTIONS = { login: "[User] Login", logout: "[User] Logout" };
 export const login =
   (email, password, setErrorMessage, navigate) => async (dispatch) => {
     setErrorMessage("");
-    userApi
-      .signIn(email, password)
-      .then((result) => {
-        localStorage.setItem("TicketsApp_User_token", result.data);
-        navigate("/");
-        dispatch({
-          type: USER_ACTIONS.login,
-          payload: { email },
-        });
-      })
-      .catch(() => setErrorMessage("Неверный логин и пароль"));
+    try {
+      const result = await userApi.signIn(email, password);
+
+      localStorage.setItem("TicketsApp_User_token", result.data);
+      navigate("/");
+      dispatch({
+        type: USER_ACTIONS.login,
+        payload: { email },
+      });
+    } catch {
+      setErrorMessage("Неверный логин и пароль");
+    }
   };
 export const logout = () => {
   localStorage.removeItem("TicketsApp_User_token");
