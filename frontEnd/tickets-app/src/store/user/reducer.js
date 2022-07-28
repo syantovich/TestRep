@@ -1,6 +1,6 @@
-import { USER_ACTIONS } from "../actions/actions";
+import { USER_ACTIONS } from "./actions";
 
-const initialState = { user: "undefined" };
+const initialState = { user: undefined };
 
 const reducer = (state, action) => {
   if (!state) {

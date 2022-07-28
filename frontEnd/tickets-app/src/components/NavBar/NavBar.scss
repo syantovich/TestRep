@@ -1,0 +1,26 @@
+.navLink {
+  color: white;
+  text-decoration: none;
+  width: calc(100% / 7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  background-color: #353434;
+  border: 0.05px solid black;
+  border-right: none;
+}
+
+.activeNavLink {
+  background-color: #525252;
+  color: red;
+}
+
+.flex {
+  display: flex;
+  justify-content: center;
+}
+
+.navBar {
+  margin-bottom: 16px;
+}

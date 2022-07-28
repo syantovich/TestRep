@@ -3,13 +3,17 @@ import ReactDOM from "react-dom";
 import "./index.scss";
 import App from "./components/App/App";
 import { Provider } from "react-redux";
-import { createStore } from "redux";
-import reducer from "./store/user/reducer/reducer";
+import { createStore, applyMiddleware, compose } from "redux";
+import reducer from "./store/user/reducer";
 import { BrowserRouter } from "react-router-dom";
+import ReduxThunk from "redux-thunk";
 
 const store = createStore(
   reducer,
-  +window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  compose(
+    applyMiddleware(ReduxThunk),
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  )
 );
 
 ReactDOM.render(

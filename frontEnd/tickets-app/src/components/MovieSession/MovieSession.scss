@@ -1,0 +1,22 @@
+.cinemaName {
+  color: white;
+  font-size: 18px;
+  min-width: 100px;
+  width: 100px;
+}
+
+.hallName {
+  margin-left: 15px;
+  color: white;
+  font-size: 14px;
+}
+
+.sessions {
+  margin-left: 10px !important;
+}
+
+.flex-left {
+  display: flex;
+  justify-content: start;
+  align-items: flex-start;
+}
